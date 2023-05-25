@@ -1,0 +1,6 @@
+1. check the requirements and why theyare not working,
+2. download the data 
+3. test data collecting 
+4. test data understanding 
+5. test splitting 
+6. complete the preprocessing 
