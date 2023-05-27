@@ -4,3 +4,4 @@
 4. test data understanding 
 5. test splitting 
 6. complete the preprocessing 
+7. test txt_naive_bayes

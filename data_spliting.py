@@ -19,7 +19,7 @@ test_path ="./dataset/testset.csv"
 
 
 def split (dataset , train_path, validation_path,test_path):
-    X = dataset[["user_name", "Dates", "Captions", "Medias", "Likes", "Comments"]]
+    X = dataset[["user_name","Dates","Captions","Medias","Likes","Comments","empty_posts","nb_posts","len_caption","mean_len","nb_hashtags","mean_likes","mean_comments","text_clean"]]
     y = dataset[["I-E", "S-N", "T-F", "J-P"]]
 
     # Splitting into training and testing sets

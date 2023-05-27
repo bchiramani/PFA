@@ -12,7 +12,7 @@ import lzma
 from sklearn.model_selection import train_test_split
 
 
-root_dir = "./Dataset/Data"
+root_dir = "./Dataset/Data/"
 
 
 # -------------------MP4 to image---------------
@@ -49,44 +49,44 @@ def convert_mp4_to_image():
 
 # Generate the new dataset from files and classification.csv
 
-def extract_publication(file_list,subdir):
-  dates=[]
-  captions=[]
-  medias=[]
-  likes=[]
-  comments=[]
-  for file_name in file_list:
-    # Date
-    date = datetime.datetime(int(file_name[0:4]),int(file_name[5:7]), int(file_name[8:10]), int(file_name[11:13]), int(file_name[14:16]), int(file_name[17:19]))
-    date = date.strftime('%Y-%m-%d %H:%M:%S')
-    dates.append(date)
+def extract_publication(file_list, subdir):
+    dates = []
+    captions = []
+    medias = []
+    likes = []
+    comments = []
 
-    # Caption
-    file_path = os.path.join(subdir, file_name)
-    with open(file_path, 'r') as file:
-      caption=file.read()
-      captions.append(caption)
-      
-    # Comments and likes
-    json_file_path = os.path.join(subdir, file_name)[:-3] + "json.xz"
-    
-    with lzma.open(json_file_path, 'rb') as f:
-        data = json.loads(f.read().decode())
-    like= data['node']['edge_media_preview_like']['count']
-    comment=data['node']['edge_media_to_comment']['count']
-    likes.append(like)
-    comments.append(comment)
+    for file_name in file_list:
+        # Date
+        date = datetime.datetime(int(file_name[0:4]), int(file_name[5:7]), int(file_name[8:10]),
+                                 int(file_name[11:13]), int(file_name[14:16]), int(file_name[17:19]))
+        date = date.strftime('%Y-%m-%d %H:%M:%S')
+        dates.append(date)
 
-    # Get images
-    media = str(subdir)+'/'+file_name[:-3]+"jpg"
-    if ( os.path.exists(media)== False) :
-      media = str(subdir)+'/'+file_name[:-4]+"_1.jpg"
+        # Caption
+        file_path = os.path.join(subdir, file_name)
+        with open(file_path, 'r', encoding='utf-8') as file:
+            caption = file.read()
+            captions.append(caption)
 
+        # Comments and likes
+        json_file_path = os.path.join(subdir, file_name)[:-3] + "json.xz"
 
-    medias.append(media)
+        with lzma.open(json_file_path, 'rb') as f:
+            data = json.loads(f.read().decode())
+        like = data['node']['edge_media_preview_like']['count']
+        comment = data['node']['edge_media_to_comment']['count']
+        likes.append(like)
+        comments.append(comment)
 
+        # Get images
+        media = str(subdir) + '/' + file_name[:-3] + "jpg"
+        if not os.path.exists(media):
+            media = str(subdir) + '/' + file_name[:-4] + "_1.jpg"
 
-  return dates, captions, medias, likes, comments
+        medias.append(media)
+
+    return dates, captions, medias, likes, comments
 
 
 def generate_dataset_from_data():
@@ -104,7 +104,9 @@ def generate_dataset_from_data():
         dates, captions, medias, likes, comments=extract_publication(file_list,subdir)
         if len(medias) != 0 and len(captions) != 0 : 
             dataset.append([user_name,dates, captions, medias, likes, comments])
+        print([user_name,dates, captions, medias, likes, comments])
     print('dataset', dataset)
+    
     
     with open('./Dataset/new_dataset.csv', 'w', newline='') as file:
         writer = csv.writer(file)
