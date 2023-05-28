@@ -94,7 +94,7 @@ def generate_dataset_from_data():
     dataset=[]
 
     for subdir, dirs, files in os.walk(root_dir):
-        user_name=subdir[43:]
+        user_name=subdir[15:]
         dates=[]
         captions=[]
         medias=[]
@@ -108,7 +108,7 @@ def generate_dataset_from_data():
     print('dataset', dataset)
     
     
-    with open('./Dataset/new_dataset.csv', 'w', newline='') as file:
+    with open('./Dataset/new_dataset.csv', 'w', newline='',encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(['user_name', 'Dates', 'Captions', 'Medias', 'Likes' , 'Comments'])
         for row in dataset:
@@ -116,8 +116,8 @@ def generate_dataset_from_data():
 
 def merge_datasets():
     # load the new_dataset and the classification_dataset
-    new_dataset = pd.read_csv('./dataset/new_dataset.csv')
-    classification_dataset = pd.read_csv('./dataset/classification_dataset.csv')
+    new_dataset = pd.read_csv('./Dataset/new_dataset.csv')
+    classification_dataset = pd.read_csv('./Dataset/classification_dataset.csv')
 
     # Edit usernames ending with ***
     for i in range(0,classification_dataset['user_name'].size):
@@ -128,7 +128,7 @@ def merge_datasets():
     # Merge the two datasets into final_dataset.csv        
     merged_df = pd.merge(new_dataset, classification_dataset, on='user_name')
     merged_df=merged_df.drop(columns=['nb_emojis','id','captions'])
-    merged_df.to_csv('./dataset/final_dataset.csv')
+    merged_df.to_csv('./Dataset/final_dataset.csv')
 
 
 

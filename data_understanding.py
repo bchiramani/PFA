@@ -12,7 +12,7 @@ import re
 import ast
 
 # Load data
-df = pd.read_csv('./dataset/final_dataset.csv')
+df = pd.read_csv('./Dataset/preprocessed_dataset.csv')
 
 # General insights
 def print_insights(df):
@@ -59,7 +59,7 @@ def plot_post_frequency(df,title,attr):
     axes[2].set_title("Thinkers and Feelers")
     sns.scatterplot(data=df, x='ID', y=attr, hue='J-P', ax=axes[3])
     axes[3].set_title("Judgings and Perceivings")
-    plt.savefig(title+'png')
+    plt.savefig(os.path.join('understanding', title + '.png'))
 
 # Nb_posts
 plot_post_frequency(df,'nb_posts per user','nb_posts')
